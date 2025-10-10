@@ -8,6 +8,32 @@ let current = 0;
 let total = 0;
 let correct = 0;
 
+// Dynamically update Kapitel options based on selected level
+function updateKapitelOptions() {
+  const level = document.getElementById('levelSelect').value;
+  const kapitelSelect = document.getElementById('kapitelSelect');
+  // Remove all options
+  kapitelSelect.innerHTML = '';
+  if (wordList[level]) {
+    const kapitels = Object.keys(wordList[level]).sort((a, b) => Number(a) - Number(b));
+    kapitels.forEach(kap => {
+      const opt = document.createElement('option');
+      opt.value = kap;
+      opt.textContent = `Kapitel ${kap}`;
+      kapitelSelect.appendChild(opt);
+    });
+  }
+}
+
+// Attach change event to levelSelect on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  const levelSelect = document.getElementById('levelSelect');
+  if (levelSelect) {
+    levelSelect.addEventListener('change', updateKapitelOptions);
+    updateKapitelOptions(); // Initial population
+  }
+});
+
 export function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -24,9 +50,16 @@ function setCheckNextState({checkEnabled, nextEnabled}) {
 }
 
 export function startPractice() {
+
+  const level = document.getElementById('levelSelect').value;
+  const kapitel = document.getElementById('kapitelSelect').value;
   let n = parseInt(document.getElementById('numWords').value, 10);
-  if (n > wordList.length) n = wordList.length;
-  words = shuffle([...wordList]).slice(0, n);
+  let selectedWords = [];
+  if (wordList[level] && wordList[level][kapitel]) {
+    selectedWords = [...wordList[level][kapitel]];
+  }
+  if (n > selectedWords.length) n = selectedWords.length;
+  words = shuffle(selectedWords).slice(0, n);
   current = 0;
   correct = 0;
   total = n;
