@@ -138,9 +138,12 @@
           <option value="11">Kapitel 11</option>
           <option value="12">Kapitel 12</option>
         </select>
-        <label style="font-size:1.1em; font-weight:500; color:#312e81; margin-top:0.7em; display:block;">How many words to practice?</label>
-        <input type="number" id="numWords" min="1" max="20" value="5" style="margin:0.7em 0 1.2em 0;">
-        <br>
+        <label for="numWords" style="font-size:1.1em; font-weight:500; color:#312e81; margin-top:0.7em; display:block;">How many words to practice?</label>
+        <div style="display:flex; align-items:center; justify-content:center; gap:0.5em; margin:0.7em 0 1.2em 0;">
+          <button type="button" id="decreaseNumWords" style="width:2.2em; height:2.2em; font-size:1.3em; background:#e0e7ff; color:#312e81; border:1.5px solid #a5b4fc; border-radius:50%; box-shadow:none;">-</button>
+          <input type="number" id="numWords" min="1" max="20" value="5" style="width:3.5em; text-align:center; font-size:1.1em; padding:0.5em; border-radius:6px; border:1.5px solid #a5b4fc;">
+          <button type="button" id="increaseNumWords" style="width:2.2em; height:2.2em; font-size:1.3em; background:#e0e7ff; color:#312e81; border:1.5px solid #a5b4fc; border-radius:50%; box-shadow:none;">+</button>
+        </div>
         <button onclick="startPractice()">Start</button>
       </div>
       <div id="practice" style="display:none;">
@@ -166,7 +169,25 @@
   window.checkAnswer = checkAnswer;
   window.restart = restart;
   window.nextWord = nextWord;
-  document.addEventListener('DOMContentLoaded', setupEnterKey);
+  document.addEventListener('DOMContentLoaded', () => {
+    setupEnterKey();
+    // Add plus/minus button logic for numWords
+    const numInput = document.getElementById('numWords');
+    const decBtn = document.getElementById('decreaseNumWords');
+    const incBtn = document.getElementById('increaseNumWords');
+    if (decBtn && numInput) {
+      decBtn.onclick = () => {
+        let v = parseInt(numInput.value, 10);
+        if (v > parseInt(numInput.min, 10)) numInput.value = v - 1;
+      };
+    }
+    if (incBtn && numInput) {
+      incBtn.onclick = () => {
+        let v = parseInt(numInput.value, 10);
+        if (v < parseInt(numInput.max, 10)) numInput.value = v + 1;
+      };
+    }
+  });
   </script>
 </body>
 </html>
