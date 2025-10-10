@@ -42,10 +42,15 @@ export function showWord() {
     document.getElementById('answerInput').focus();
     document.getElementById('progress').textContent = `Word ${current + 1} of ${total}`;
     document.getElementById('feedback').textContent = '';
-    // Update progress bar (show progress for current word)
+    // Update progress bar to reflect the word being answered (current+1)
     const progressBar = document.getElementById('progressBar');
     if (progressBar) {
-      progressBar.style.width = `${((current) / total) * 100}%`;
+      let percent = ((current) / total) * 100;
+      // If the user is on a new word (after check), show the next step
+      if (document.getElementById('feedback').textContent === '') {
+        percent = ((current) / total) * 100;
+      }
+      progressBar.style.width = `${percent}%`;
     }
   } else {
     // Fill progress bar at end
@@ -66,14 +71,14 @@ export function checkAnswer() {
   } else {
     document.getElementById('feedback').textContent = `❌ Wrong! Correct answer: ${words[current].answer}`;
   }
-  current++;
-  // Update progress bar immediately after answer
+  // Update progress bar to show the answer is being checked (current+1)
   const progressBar = document.getElementById('progressBar');
   if (progressBar) {
-    let percent = (current / total) * 100;
+    let percent = ((current + 1) / total) * 100;
     if (percent > 100) percent = 100;
     progressBar.style.width = `${percent}%`;
   }
+  current++;
   setTimeout(showWord, 1000);
 }
 
