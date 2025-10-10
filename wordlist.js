@@ -10,5 +10,15 @@ export const wordList = [
   {question: "Auto", answer: "car"},
   {question: "Straße", answer: "street"},
   {question: "Apfel", answer: "apple"},
-  // Add more as needed
+    {question: "Wasser", answer: "water"},
+    {question: "Feuer", answer: "fire"},
+    {question: "Erde", answer: "earth"},
+    {question: "Luft", answer: "air"},
+    {question: "Himmel", answer: "sky"},
+    {question: "Sonne", answer: "sun"},
+    {question: "Mond", answer: "moon"},
+    {question: "Stern", answer: "star"},
+    {question: "Blume", answer: "flower"},
+    {question: "Gras", answer: "grass"},
+    {question: "Wald", answer: "forest"},
 ];

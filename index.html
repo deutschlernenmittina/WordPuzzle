@@ -4,37 +4,140 @@
   <meta charset="UTF-8">
   <title>Word Practice Tool</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh;}
-    .container { background: white; padding: 2em; box-shadow: 0 2px 12px #bbb; border-radius: 8px; width: 300px; text-align: center;}
-    .word { font-size: 1.5em; margin-bottom: 1em; }
-    .feedback { margin: 1em 0; height: 2em; }
-    input[type="text"] { padding: 0.5em; width: 90%; margin-bottom: 1em; }
-    button { padding: 0.5em 1em; margin: 0.2em; background: #1976d2; color: white; border: none; border-radius: 4px; }
-    button:disabled { background: #ccc; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: #312e81;
+      color: #fff;
+      padding: 1.5em 0 1em 0;
+      text-align: center;
+      box-shadow: 0 2px 8px #b3b3b3;
+    }
+    .container {
+      background: #fff;
+      margin: 2em auto 0 auto;
+      padding: 2.5em 2em 2em 2em;
+      box-shadow: 0 4px 24px #b3b3b3;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+    }
+    .word {
+      font-size: 2em;
+      margin-bottom: 1.2em;
+      color: #312e81;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .feedback {
+      margin: 1em 0 0.5em 0;
+      height: 2em;
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      padding: 0.7em;
+      width: 95%;
+      margin-bottom: 1.2em;
+      border: 1.5px solid #a5b4fc;
+      border-radius: 6px;
+      font-size: 1em;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus {
+      border: 2px solid #6366f1;
+      outline: none;
+    }
+    button {
+      padding: 0.6em 1.5em;
+      margin: 0.3em 0.2em;
+      background: linear-gradient(90deg, #6366f1 60%, #312e81 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #e0e7ff;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: linear-gradient(90deg, #4338ca 60%, #312e81 100%);
+      box-shadow: 0 4px 16px #c7d2fe;
+    }
+    button:disabled {
+      background: #c7d2fe;
+      color: #888;
+      cursor: not-allowed;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #e0e7ff;
+      border-radius: 6px;
+      margin: 1em 0 0.5em 0;
+      height: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1 60%, #312e81 100%);
+      width: 0%;
+      border-radius: 6px;
+      transition: width 0.4s;
+    }
+    #score {
+      font-size: 1.2em;
+      color: #312e81;
+      margin: 1em 0 0.5em 0;
+      font-weight: 600;
+    }
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.2em 0.5em 1em 0.5em;
+        max-width: 98vw;
+      }
+      .word {
+        font-size: 1.2em;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Word Practice Tool</h2>
-    <div id="setup">
-      <label>How many words to practice? <input type="number" id="numWords" min="1" max="20" value="5"></label>
-      <br>
-      <button onclick="startPractice()">Start</button>
+  <header>
+    <h1>Word Practice Tool</h1>
+    <p style="font-size:1.1em; font-weight:400; margin:0.2em 0 0 0; color:#c7d2fe;">Practice your vocabulary in style!</p>
+  </header>
+  <main>
+    <div class="container">
+      <div id="setup">
+        <label style="font-size:1.1em; font-weight:500; color:#312e81;">How many words to practice?</label>
+        <input type="number" id="numWords" min="1" max="20" value="5" style="margin:0.7em 0 1.2em 0;">
+        <br>
+        <button onclick="startPractice()">Start</button>
+      </div>
+      <div id="practice" style="display:none;">
+        <div class="word" id="wordDisplay"></div>
+        <input type="text" id="answerInput" placeholder="Enter the answer">
+        <br>
+        <button onclick="checkAnswer()">Check</button>
+        <div class="feedback" id="feedback"></div>
+        <div class="progress-bar"><div class="progress-bar-inner" id="progressBar"></div></div>
+        <div id="progress" style="color:#6366f1; font-size:0.98em;"></div>
+      </div>
+      <div id="end" style="display:none;">
+        <h3 style="color:#16a34a; font-size:1.3em;">Practice complete!</h3>
+        <div id="score"></div>
+        <button onclick="restart()">Practice Again</button>
+      </div>
     </div>
-    <div id="practice" style="display:none;">
-      <div class="word" id="wordDisplay"></div>
-      <input type="text" id="answerInput" placeholder="Enter the answer">
-      <br>
-      <button onclick="checkAnswer()">Check</button>
-      <div class="feedback" id="feedback"></div>
-      <div id="progress"></div>
-    </div>
-    <div id="end" style="display:none;">
-      <h3>Practice complete!</h3>
-      <div id="score"></div>
-      <button onclick="restart()">Practice Again</button>
-    </div>
-  </div>
+  </main>
   <script type="module">
     import { startPractice, checkAnswer, restart, setupEnterKey } from './script.js';
     window.startPractice = startPractice;

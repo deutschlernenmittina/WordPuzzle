@@ -39,7 +39,17 @@ export function showWord() {
     document.getElementById('answerInput').focus();
     document.getElementById('progress').textContent = `Word ${current + 1} of ${total}`;
     document.getElementById('feedback').textContent = '';
+    // Update progress bar
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+      progressBar.style.width = `${((current) / total) * 100}%`;
+    }
   } else {
+    // Fill progress bar at end
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+      progressBar.style.width = '100%';
+    }
     endPractice();
   }
 }
