@@ -16,6 +16,13 @@ export function shuffle(array) {
   return array;
 }
 
+function setCheckNextState({checkEnabled, nextEnabled}) {
+  const checkBtn = document.getElementById('checkBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (checkBtn) checkBtn.disabled = !checkEnabled;
+  if (nextBtn) nextBtn.style.display = nextEnabled ? '' : 'none';
+}
+
 export function startPractice() {
   let n = parseInt(document.getElementById('numWords').value, 10);
   if (n > wordList.length) n = wordList.length;
@@ -32,6 +39,7 @@ export function startPractice() {
   // Reset progress bar
   const progressBar = document.getElementById('progressBar');
   if (progressBar) progressBar.style.width = '0%';
+  setCheckNextState({checkEnabled: true, nextEnabled: false});
   showWord();
 }
 
@@ -42,14 +50,11 @@ export function showWord() {
     document.getElementById('answerInput').focus();
     document.getElementById('progress').textContent = `Word ${current + 1} of ${total}`;
     document.getElementById('feedback').textContent = '';
+    setCheckNextState({checkEnabled: true, nextEnabled: false});
     // Update progress bar to reflect the word being answered (current+1)
     const progressBar = document.getElementById('progressBar');
     if (progressBar) {
       let percent = ((current) / total) * 100;
-      // If the user is on a new word (after check), show the next step
-      if (document.getElementById('feedback').textContent === '') {
-        percent = ((current) / total) * 100;
-      }
       progressBar.style.width = `${percent}%`;
     }
   } else {
@@ -71,15 +76,12 @@ export function checkAnswer() {
   } else {
     document.getElementById('feedback').textContent = `❌ Wrong! Correct answer: ${words[current].answer}`;
   }
-  // Update progress bar to show the answer is being checked (current+1)
-  const progressBar = document.getElementById('progressBar');
-  if (progressBar) {
-    let percent = ((current + 1) / total) * 100;
-    if (percent > 100) percent = 100;
-    progressBar.style.width = `${percent}%`;
-  }
+  setCheckNextState({checkEnabled: false, nextEnabled: true});
+}
+
+export function nextWord() {
   current++;
-  setTimeout(showWord, 1000);
+  showWord();
 }
 
 export function endPractice() {
@@ -96,6 +98,9 @@ export function restart() {
 // Allow pressing Enter to check answer
 export function setupEnterKey() {
   document.getElementById('answerInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') checkAnswer();
+    if (event.key === 'Enter') {
+      const checkBtn = document.getElementById('checkBtn');
+      if (!checkBtn.disabled) checkAnswer();
+    }
   });
 }

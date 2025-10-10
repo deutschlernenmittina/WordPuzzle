@@ -144,13 +144,14 @@
         <button onclick="startPractice()">Start</button>
       </div>
       <div id="practice" style="display:none;">
-        <div class="word" id="wordDisplay"></div>
-        <input type="text" id="answerInput" placeholder="Enter the answer">
-        <br>
-        <button onclick="checkAnswer()">Check</button>
-        <div class="feedback" id="feedback"></div>
-        <div class="progress-bar"><div class="progress-bar-inner" id="progressBar"></div></div>
-        <div id="progress" style="color:#6366f1; font-size:0.98em;"></div>
+  <div class="word" id="wordDisplay"></div>
+  <input type="text" id="answerInput" placeholder="Enter the answer">
+  <br>
+  <button id="checkBtn" onclick="checkAnswer()">Check</button>
+  <button id="nextBtn" onclick="nextWord()" style="display:none; background:#16a34a;">Next</button>
+  <div class="feedback" id="feedback"></div>
+  <div class="progress-bar"><div class="progress-bar-inner" id="progressBar"></div></div>
+  <div id="progress" style="color:#6366f1; font-size:0.98em;"></div>
       </div>
       <div id="end" style="display:none;">
         <h3 style="color:#16a34a; font-size:1.3em;">Practice complete!</h3>
