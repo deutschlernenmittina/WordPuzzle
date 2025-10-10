@@ -161,11 +161,12 @@
     </div>
   </main>
   <script type="module">
-    import { startPractice, checkAnswer, restart, setupEnterKey } from './script.js';
-    window.startPractice = startPractice;
-    window.checkAnswer = checkAnswer;
-    window.restart = restart;
-    document.addEventListener('DOMContentLoaded', setupEnterKey);
+  import { startPractice, checkAnswer, restart, setupEnterKey, nextWord } from './script.js';
+  window.startPractice = startPractice;
+  window.checkAnswer = checkAnswer;
+  window.restart = restart;
+  window.nextWord = nextWord;
+  document.addEventListener('DOMContentLoaded', setupEnterKey);
   </script>
 </body>
 </html>
