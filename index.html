@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Practice Tool</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh;}
+    .container { background: white; padding: 2em; box-shadow: 0 2px 12px #bbb; border-radius: 8px; width: 300px; text-align: center;}
+    .word { font-size: 1.5em; margin-bottom: 1em; }
+    .feedback { margin: 1em 0; height: 2em; }
+    input[type="text"] { padding: 0.5em; width: 90%; margin-bottom: 1em; }
+    button { padding: 0.5em 1em; margin: 0.2em; background: #1976d2; color: white; border: none; border-radius: 4px; }
+    button:disabled { background: #ccc; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Word Practice Tool</h2>
+    <div id="setup">
+      <label>How many words to practice? <input type="number" id="numWords" min="1" max="20" value="5"></label>
+      <br>
+      <button onclick="startPractice()">Start</button>
+    </div>
+    <div id="practice" style="display:none;">
+      <div class="word" id="wordDisplay"></div>
+      <input type="text" id="answerInput" placeholder="Enter the answer">
+      <br>
+      <button onclick="checkAnswer()">Check</button>
+      <div class="feedback" id="feedback"></div>
+      <div id="progress"></div>
+    </div>
+    <div id="end" style="display:none;">
+      <h3>Practice complete!</h3>
+      <div id="score"></div>
+      <button onclick="restart()">Practice Again</button>
+    </div>
+  </div>
+  <script type="module">
+    import { startPractice, checkAnswer, restart, setupEnterKey } from './script.js';
+    window.startPractice = startPractice;
+    window.checkAnswer = checkAnswer;
+    window.restart = restart;
+    document.addEventListener('DOMContentLoaded', setupEnterKey);
+  </script>
+</body>
+</html>
