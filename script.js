@@ -29,6 +29,9 @@ export function startPractice() {
   document.getElementById('end').style.display = 'none';
   document.getElementById('feedback').textContent = '';
   document.getElementById('answerInput').value = '';
+  // Reset progress bar
+  const progressBar = document.getElementById('progressBar');
+  if (progressBar) progressBar.style.width = '0%';
   showWord();
 }
 
@@ -39,7 +42,7 @@ export function showWord() {
     document.getElementById('answerInput').focus();
     document.getElementById('progress').textContent = `Word ${current + 1} of ${total}`;
     document.getElementById('feedback').textContent = '';
-    // Update progress bar
+    // Update progress bar (show progress for current word)
     const progressBar = document.getElementById('progressBar');
     if (progressBar) {
       progressBar.style.width = `${((current) / total) * 100}%`;
@@ -64,6 +67,13 @@ export function checkAnswer() {
     document.getElementById('feedback').textContent = `❌ Wrong! Correct answer: ${words[current].answer}`;
   }
   current++;
+  // Update progress bar immediately after answer
+  const progressBar = document.getElementById('progressBar');
+  if (progressBar) {
+    let percent = (current / total) * 100;
+    if (percent > 100) percent = 100;
+    progressBar.style.width = `${percent}%`;
+  }
   setTimeout(showWord, 1000);
 }
 
