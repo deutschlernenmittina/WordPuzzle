@@ -53,16 +53,48 @@ export function startPractice() {
 
   const level = document.getElementById('levelSelect').value;
   const kapitel = document.getElementById('kapitelSelect').value;
+  const section = document.getElementById('sectionSelect') ? document.getElementById('sectionSelect').value : 'none';
   let n = parseInt(document.getElementById('numWords').value, 10);
   let selectedWords = [];
   if (wordList[level] && wordList[level][kapitel]) {
-    selectedWords = [...wordList[level][kapitel]];
+    let allWords = [...wordList[level][kapitel]];
+    if (section && section !== 'none') {
+      const sectionNum = parseInt(section, 10);
+      const startIdx = (sectionNum - 1) * 50;
+      let endIdx = startIdx + 50;
+      // Clamp endIdx to array length
+      if (startIdx >= allWords.length) {
+        selectedWords = [];
+      } else {
+        endIdx = Math.min(endIdx, allWords.length);
+        selectedWords = allWords.slice(startIdx, endIdx);
+      }
+    } else {
+      selectedWords = allWords;
+    }
   }
   if (n > selectedWords.length) n = selectedWords.length;
   words = shuffle(selectedWords).slice(0, n);
   current = 0;
   correct = 0;
   total = n;
+
+  // Show practice info
+  const infoDiv = document.getElementById('practiceInfo');
+  if (infoDiv) {
+    let infoText = 'Now Practicing: ';
+    const level = document.getElementById('levelSelect').value;
+    const kapitel = document.getElementById('kapitelSelect').value;
+    const sectionEl = document.getElementById('sectionSelect');
+    const section = sectionEl ? sectionEl.value : 'none';
+    const numWords = document.getElementById('numWords').value;
+    infoText += `Level ${level}, Kapitel ${kapitel}`;
+    if (section && section !== 'none') {
+      infoText += `, Section ${section}`;
+    }
+    infoText += `, ${numWords} word${numWords == 1 ? '' : 's'}`;
+    infoDiv.textContent = infoText;
+  }
 
   document.getElementById('setup').style.display = 'none';
   document.getElementById('practice').style.display = '';
@@ -121,11 +153,17 @@ export function endPractice() {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('end').style.display = '';
   document.getElementById('score').textContent = `You got ${correct} out of ${total} correct!`;
+  // Clear practice info
+  const infoDiv = document.getElementById('practiceInfo');
+  if (infoDiv) infoDiv.textContent = '';
 }
 
 export function restart() {
   document.getElementById('setup').style.display = '';
   document.getElementById('end').style.display = 'none';
+  // Clear practice info
+  const infoDiv = document.getElementById('practiceInfo');
+  if (infoDiv) infoDiv.textContent = '';
 }
 
 // Allow pressing Enter to check answer

@@ -191,6 +191,24 @@
           <option value="12">Kapitel 12</option>
         </select>
         <label for="numWords" style="font-size:1.1em; font-weight:500; color:#312e81; margin-top:0.7em; display:block;">How many words to practice?</label>
+        <label for="sectionSelect" style="font-size:1.1em; font-weight:500; color:#312e81; margin-top:0.7em; display:block;">Section (optional):</label>
+        <select id="sectionSelect" style="margin:0.7em 0 1.2em 0; width: 100%; padding: 0.5em; border-radius: 6px; border: 1.5px solid #a5b4fc; font-size: 1em;">
+          <option value="none">None (all words)</option>
+          <option value="1">Section 1 (1-50)</option>
+          <option value="2">Section 2 (51-100)</option>
+          <option value="3">Section 3 (101-150)</option>
+          <option value="4">Section 4 (151-200)</option>
+          <option value="5">Section 5 (201-250)</option>
+          <option value="6">Section 6 (251-300)</option>
+          <option value="7">Section 7 (301-350)</option>
+          <option value="8">Section 8 (351-400)</option>
+          <option value="9">Section 9 (401-450)</option>
+          <option value="10">Section 10 (451-500)</option>
+          <option value="11">Section 11 (501-550)</option>
+          <option value="12">Section 12 (551-600)</option>
+        </select>
+        </select>
+        </select>
         <div class="numwords-group">
           <button type="button" id="decreaseNumWords" class="numwords-btn" aria-label="Decrease">-</button>
           <input type="number" id="numWords" min="1" max="20" value="5" class="numwords-input" aria-label="Number of words">
@@ -199,6 +217,7 @@
         <button onclick="startPractice()">Start</button>
       </div>
       <div id="practice" style="display:none;">
+  <div id="practiceInfo" style="color:#64748b; font-size:0.98em; margin-bottom:0.5em;"></div>
   <div class="word" id="wordDisplay"></div>
   <input type="text" id="answerInput" placeholder="Enter the answer">
   <br>
