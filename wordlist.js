@@ -841,7 +841,7 @@ export const wordList = {
       { question: "verlieren", answer: "to lose" },
       { question: "je", answer: "each, respectively" },
       { question: "Wichtig für mich:", answer: "Important for me:" },
-      { question: "Ergänzen Sie Wörter.", answer: "Complete word },
+      { question: "Ergänzen Sie Wörter.", answer: "Complete word" },
       { question: "Sozialkunde", answer: "Social Studies" },
       { question: "Chemie", answer: "Chemistry" },
       { question: "Hauptschule", answer: "Secondary School" },
