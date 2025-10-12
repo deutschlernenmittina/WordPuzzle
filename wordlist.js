@@ -2784,7 +2784,7 @@ export const wordList = {
       { question: "der Export", answer: "the export" },
       { question: "der Import", answer: "the import" },
       { question: "die Frist", answer: "the deadline" },
-      { question: "(Frei-)Zeit", answer: "the (free) time" },
+      { question: "(Frei-)Zeit", answer: "the free time" },
       { question: "Ich würde gern ...", answer: "I would like to ..." },
       { question: "ausschalten (das Handy ausschalten)", answer: "to switch, to turn (to switch off the mobile phone)" },
       { question: "klingeln (Das Handy hat geklingelt.)", answer: "to ring (The mobile phone rang.)" },
