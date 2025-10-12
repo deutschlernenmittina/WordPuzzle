@@ -2599,7 +2599,7 @@ export const wordList = {
       { question: "stark (Heute regnet es stark.)", answer: "strong (It's raining heavily today.)" },
       { question: "trocken (Heute bleibt es trocken.)", answer: "dry (It will stay dry today.)" },
       { question: "andere wichtige Wörter und Wendungen", answer: "other important words and phrases" },
-      { question: "außer (+ D.)", answer: "except for (+ dative)" },
+      { question: "außer (+ D.)", answer: "except for" },
       { question: "ausfallen, er fällt aus, ist ausgefallen (Das Spiel fällt leider aus.)", answer: "to be canceled, it is canceled, has been canceled (The game is unfortunately canceled.)" },
       { question: "deshalb", answer: "therefore" },
       { question: "trotzdem", answer: "nevertheless" },
