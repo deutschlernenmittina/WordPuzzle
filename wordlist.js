@@ -2960,7 +2960,7 @@ export const wordList = {
       { question: "das Quiz", answer: "the quiz" },
       { question: "Malerei", answer: "Painting" },
       { question: "die Malerei (Sg.)", answer: "the painting / the art of painting" },
-      { question: "der Titel (Auf dem Bild mit dem Titel „Abend“ sieht man ...)", answer: "the title (In the picture with the title "Evening" one sees ...)" },
+      { question: "der Titel (Auf dem Bild mit dem Titel „Abend“ sieht man ...)", answer: "the title (In the picture with the title „Evening“ one sees ...)" },
       { question: "die Bedeutung", answer: "the meaning / the importance" },
       { question: "der Ausblick (Von hier hat man einen tollen Ausblick auf das Meer.)", answer: "the view / the outlook / the prospect (From here you have a great view of the sea.)" },
       { question: "das Blatt", answer: "the leaf / the sheet of paper / the newspaper" },
