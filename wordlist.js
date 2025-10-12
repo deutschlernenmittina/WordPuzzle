@@ -727,7 +727,7 @@ export const wordList = {
       { question: "verboten", answer: "forbidden" },
       { question: "überall", answer: "everywhere" },
       { question: "besonders (Was ist besonders?)", answer: "especially/special (What is special?)" },
-      { question: "der Spielplatz, "e", answer: "the playground" },
+      { question: "der Spielplatz", answer: "the playground" },
       { question: "früh", answer: "early" },
       { question: "Warum nicht?", answer: "Why not?" },
       { question: "Alles klar?", answer: "Everything clear?/Got it?" },
