@@ -18,7 +18,7 @@ export const wordList = {
       { question: "die Stadt, e", answer: "the city" },
       { question: "wie (Wie heißt du?)", answer: "how (What are you called?)" },
       { question: "wer (Wer bist du?) ", answer: "who (Who are you?)" },
-      { question: "wo ("Wo wohnst du?) ", answer: "where (Where do you live?)" },
+      { question: "wo (Wo wohnst du?) ", answer: "where (Where do you live?)" },
       { question: "woher (Woher kommst du?) ", answer: "where from (Where are you from?)" },
       { question: "Das ist Herr/Frau...", answer: "This is Mr./Mrs...." },
       { question: "die E-Mail-Adresse", answer: "the email address" },
