@@ -248,13 +248,19 @@
     </div>
   </main>
   <script type="module">
-  import { startPractice, checkAnswer, restart, setupEnterKey, nextWord } from './script.js';
+  import { startPractice, checkAnswer, restart, setupEnterKey, nextWord, updateKapitelOptions } from './script_words.js';
   window.startPractice = startPractice;
   window.checkAnswer = checkAnswer;
   window.restart = restart;
   window.nextWord = nextWord;
   document.addEventListener('DOMContentLoaded', () => {
     setupEnterKey();
+    // Populate kapitel/select options
+    const levelSelect = document.getElementById('levelSelect');
+    if (levelSelect) {
+      levelSelect.addEventListener('change', updateKapitelOptions);
+      updateKapitelOptions();
+    }
     // Add plus/minus button logic for numWords
     const numInput = document.getElementById('numWords');
     const decBtn = document.getElementById('decreaseNumWords');
