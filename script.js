@@ -175,3 +175,127 @@ export function setupEnterKey() {
     }
   });
 }
+
+const verbs = [
+  {en: "to go", pr: "gehen", pe: "ist gegangen"},
+  {en: "to come", pr: "kommen", pe: "ist gekommen"},
+  {en: "to eat", pr: "essen", pe: "hat gegessen"},
+  {en: "to drink", pr: "trinken", pe: "hat getrunken"},
+  {en: "to see", pr: "sehen", pe: "hat gesehen"},
+  {en: "to write", pr: "schreiben", pe: "hat geschrieben"},
+  {en: "to speak", pr: "sprechen", pe: "hat gesprochen"},
+  {en: "to find", pr: "finden", pe: "hat gefunden"},
+  {en: "to give", pr: "geben", pe: "hat gegeben"},
+  {en: "to sleep", pr: "schlafen", pe: "hat geschlafen"},
+  {en: "to begin", pr: "beginnen", pe: "hat begonnen"},
+  {en: "to stay", pr: "bleiben", pe: "ist geblieben"},
+  {en: "to help", pr: "helfen", pe: "hat geholfen"},
+  {en: "to drive", pr: "fahren", pe: "ist gefahren"},
+  {en: "to read", pr: "lesen", pe: "hat gelesen"},
+  {en: "to take", pr: "nehmen", pe: "hat genommen"},
+  {en: "to call", pr: "rufen", pe: "hat gerufen"},
+  {en: "to run", pr: "laufen", pe: "ist gelaufen"},
+  {en: "to win", pr: "gewinnen", pe: "hat gewonnen"},
+  {en: "to lose", pr: "verlieren", pe: "hat verloren"}
+];
+
+let selectedVerbs = [];
+let currentIdx = 0;
+let score = 0;
+let total = 0;
+
+const setupSection = document.getElementById('setup-section');
+const quizSection = document.getElementById('quiz-section');
+const resultSection = document.getElementById('result-section');
+
+const startBtn = document.getElementById('start-btn');
+const restartBtn = document.getElementById('restart-btn');
+const numQuestionsSelect = document.getElementById('num-questions');
+
+const progress = document.getElementById('progress');
+const quizForm = document.getElementById('quiz-form');
+const englishVerb = document.getElementById('english-verb');
+const presentInput = document.getElementById('present');
+const perfectInput = document.getElementById('perfect');
+const feedback = document.getElementById('feedback');
+const resultScore = document.getElementById('result-score');
+
+// Shuffle helper
+function shuffle(array) {
+  let a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// --- Quiz Logic ---
+function startQuiz() {
+  currentIdx = 0;
+  score = 0;
+  total = parseInt(numQuestionsSelect.value, 10);
+  selectedVerbs = shuffle(verbs).slice(0, total);
+
+  setupSection.style.display = 'none';
+  quizSection.style.display = 'block';
+  resultSection.style.display = 'none';
+
+  showQuestion();
+}
+
+function showQuestion() {
+  if (currentIdx >= selectedVerbs.length) {
+    showResult();
+    return;
+  }
+  progress.textContent = `Verb ${currentIdx + 1} of ${selectedVerbs.length}`;
+  const v = selectedVerbs[currentIdx];
+  englishVerb.textContent = v.en;
+  presentInput.value = '';
+  perfectInput.value = '';
+  feedback.textContent = '';
+  feedback.className = '';
+  setTimeout(() => presentInput.focus(), 50);
+}
+
+quizForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const userPresent = presentInput.value.trim().toLowerCase();
+  const userPerfect = perfectInput.value.trim().toLowerCase();
+  const v = selectedVerbs[currentIdx];
+  const correctPresent = v.pr.toLowerCase();
+  const correctPerfect = v.pe.toLowerCase();
+
+  let isCorrect = (userPresent === correctPresent) && (userPerfect === correctPerfect);
+
+  if (isCorrect) {
+    feedback.textContent = 'Correct!';
+    feedback.className = 'correct';
+    score++;
+  } else {
+    feedback.innerHTML = `Incorrect.<br> <span style="color:#647dee">Präsens:</span> <b>${v.pr}</b> &nbsp; <span style="color:#43cea2">Perfekt:</span> <b>${v.pe}</b>`;
+    feedback.className = 'incorrect';
+  }
+
+  setTimeout(() => {
+    currentIdx++;
+    showQuestion();
+  }, 1050);
+});
+
+function showResult() {
+  quizSection.style.display = 'none';
+  resultSection.style.display = 'block';
+  let emoji = score === selectedVerbs.length ? "🎉" : score >= selectedVerbs.length / 2 ? "👍" : "💡";
+  resultScore.innerHTML = `You got <span style="color:#43cea2">${score}</span> out of <span style="color:#7f53ac">${selectedVerbs.length}</span> correct! <br>${emoji} ${score === selectedVerbs.length ? 'Perfect! Great job!' : (score > selectedVerbs.length / 2 ? 'Nice work!' : 'Keep practicing!')}`;
+}
+
+startBtn.addEventListener('click', startQuiz);
+restartBtn.addEventListener('click', () => {
+  setupSection.style.display = 'block';
+  quizSection.style.display = 'none';
+  resultSection.style.display = 'none';
+  score = 0;
+  currentIdx = 0;
+});
