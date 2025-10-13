@@ -28,21 +28,44 @@ export function updateKapitelOptions() {
 
 export function startPractice() {
   const num = parseInt(document.getElementById('numWords').value, 10) || 5;
-  // Flatten selected list (naive: take all words from selected level/kapitel/section if implemented)
   const level = document.getElementById('levelSelect')?.value || 'A1';
   const kap = document.getElementById('kapitelSelect')?.value;
+  const section = document.getElementById('sectionSelect')?.value;
   let pool = [];
+  
+  console.log('Selected level:', level);  // Debug log
+  console.log('Selected kapitel:', kap);  // Debug log
+  console.log('Selected section:', section);  // Debug log
+  
   if (wordList[level]) {
-    if (kap && wordList[level][kap]) pool = wordList[level][kap];
-    else {
+    console.log('Word list for level exists');  // Debug log
+    if (kap && wordList[level][kap]) {
+      console.log('Found words for kapitel:', wordList[level][kap].length);  // Debug log
+      pool = [...wordList[level][kap]];
+      // Apply section filtering if selected
+      if (section && section !== 'none') {
+        const sectionSize = 50;
+        const start = (parseInt(section, 10) - 1) * sectionSize;
+        const end = start + sectionSize;
+        pool = pool.slice(start, end);
+        console.log('After section filtering, pool size:', pool.length);  // Debug log
+      }
+    } else {
       // merge all kapitels
       Object.values(wordList[level]).forEach(arr => pool.push(...arr));
+      console.log('Merged all kapitels, total words:', pool.length);  // Debug log
     }
   }
   words = shuffle(pool).slice(0, Math.max(1, Math.min(100, num)));
   current = 0;
   total = words.length;
   correct = 0;
+  
+  // Add debug info
+  const info = document.getElementById('practiceInfo');
+  if (info) {
+    info.textContent = `Selected ${total} words from ${level} Kapitel ${kap || 'all'}${section !== 'none' ? ` Section ${section}` : ''}`;
+  }
 
   document.getElementById('setup').style.display = 'none';
   document.getElementById('practice').style.display = '';
@@ -54,8 +77,21 @@ export function startPractice() {
 export function showQuestion() {
   if (current >= total) return endPractice();
   const w = words[current];
-  document.getElementById('practiceInfo').textContent = '';
-  document.getElementById('wordDisplay').textContent = w ? w.de || w.word || '' : '';
+  console.log('Current word object:', w);  // Debug log
+  
+  // Show debug info about the current word
+  const info = document.getElementById('practiceInfo');
+  if (info) {
+    info.textContent = w ? `Word ${current + 1} of ${total}` : 'No word found';
+  }
+  
+  const wordDisplay = document.getElementById('wordDisplay');
+  if (wordDisplay) {
+    const wordText = w ? w.question || '[No word found]' : '[No word found]';
+    console.log('Setting word display to:', wordText);  // Debug log
+    wordDisplay.textContent = wordText;
+  }
+  
   document.getElementById('answerInput').value = '';
   document.getElementById('feedback').textContent = '';
   document.getElementById('checkBtn').disabled = false;
@@ -67,14 +103,14 @@ export function showQuestion() {
 export function checkAnswer() {
   const user = document.getElementById('answerInput').value.trim().toLowerCase();
   const w = words[current] || {};
-  const correctAnswer = (w.en || w.answer || '').toLowerCase();
+  const correctAnswer = (w.answer || '').toLowerCase();
   const fb = document.getElementById('feedback');
   if (!user) return;
   if (user === correctAnswer) {
     fb.textContent = '✅ Correct!';
     correct++;
   } else {
-    fb.innerHTML = `❌ Incorrect. Answer: <b>${w.en || w.answer || '-'}</b>`;
+    fb.innerHTML = `❌ Incorrect. Answer: <b>${w.answer || '-'}</b>`;
   }
   document.getElementById('checkBtn').disabled = true;
   document.getElementById('nextBtn').style.display = '';
