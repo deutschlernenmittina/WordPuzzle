@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>German Verb Practice Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="main-bg">
+    <div class="glass-card">
+      <header>
+        <h1>German Verb Trainer</h1>
+        <p class="subtitle">Test your German verbs: Translate from English to <b>Präsens</b> & <b>Perfekt</b></p>
+      </header>
+      <section id="setup-section">
+        <label for="num-questions" class="setup-label">How many verbs would you like to practice?</label>
+        <select id="num-questions">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+        <button id="start-btn" class="primary-btn">Start Quiz</button>
+      </section>
+      <section id="quiz-section" style="display:none">
+        <div id="progress"></div>
+        <div id="quiz-content">
+          <div class="question-card">
+            <span class="label">English:</span>
+            <span id="english-verb"></span>
+          </div>
+          <form id="quiz-form" autocomplete="off">
+            <div class="input-row">
+              <label for="present">Präsens</label>
+              <input type="text" id="present" name="present" required autocomplete="off">
+            </div>
+            <div class="input-row">
+              <label for="perfect">Perfekt</label>
+              <input type="text" id="perfect" name="perfect" required autocomplete="off">
+            </div>
+            <button type="submit" class="primary-btn">Check Answer</button>
+          </form>
+          <div id="feedback"></div>
+        </div>
+      </section>
+      <section id="result-section" style="display:none">
+        <h2>Results</h2>
+        <p id="result-score"></p>
+        <button id="restart-btn" class="primary-btn">Try Again</button>
+      </section>
+    </div>
+    <footer>
+      <p>Made with <span class="heart">♥</span> for language learners</p>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
