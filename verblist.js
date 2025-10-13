@@ -1,0 +1,22 @@
+export const verbs = [
+  {en: "to go", pr: "gehen", pe: "ist gegangen"},
+  {en: "to come", pr: "kommen", pe: "ist gekommen"},
+  {en: "to eat", pr: "essen", pe: "hat gegessen"},
+  {en: "to drink", pr: "trinken", pe: "hat getrunken"},
+  {en: "to see", pr: "sehen", pe: "hat gesehen"},
+  {en: "to write", pr: "schreiben", pe: "hat geschrieben"},
+  {en: "to speak", pr: "sprechen", pe: "hat gesprochen"},
+  {en: "to find", pr: "finden", pe: "hat gefunden"},
+  {en: "to give", pr: "geben", pe: "hat gegeben"},
+  {en: "to sleep", pr: "schlafen", pe: "hat geschlafen"},
+  {en: "to begin", pr: "beginnen", pe: "hat begonnen"},
+  {en: "to stay", pr: "bleiben", pe: "ist geblieben"},
+  {en: "to help", pr: "helfen", pe: "hat geholfen"},
+  {en: "to drive", pr: "fahren", pe: "ist gefahren"},
+  {en: "to read", pr: "lesen", pe: "hat gelesen"},
+  {en: "to take", pr: "nehmen", pe: "hat genommen"},
+  {en: "to call", pr: "rufen", pe: "hat gerufen"},
+  {en: "to run", pr: "laufen", pe: "ist gelaufen"},
+  {en: "to win", pr: "gewinnen", pe: "hat gewonnen"},
+  {en: "to lose", pr: "verlieren", pe: "hat verloren"}
+];

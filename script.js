@@ -49,113 +49,59 @@ function setCheckNextState({checkEnabled, nextEnabled}) {
   if (nextBtn) nextBtn.style.display = nextEnabled ? '' : 'none';
 }
 
-export function startPractice() {
-
-  const level = document.getElementById('levelSelect').value;
-  const kapitel = document.getElementById('kapitelSelect').value;
-  const section = document.getElementById('sectionSelect') ? document.getElementById('sectionSelect').value : 'none';
-  let n = parseInt(document.getElementById('numWords').value, 10);
-  let selectedWords = [];
-  if (wordList[level] && wordList[level][kapitel]) {
-    let allWords = [...wordList[level][kapitel]];
-    if (section && section !== 'none') {
-      const sectionNum = parseInt(section, 10);
-      const startIdx = (sectionNum - 1) * 50;
-      let endIdx = startIdx + 50;
-      // Clamp endIdx to array length
-      if (startIdx >= allWords.length) {
-        selectedWords = [];
-      } else {
-        endIdx = Math.min(endIdx, allWords.length);
-        selectedWords = allWords.slice(startIdx, endIdx);
-      }
-    } else {
-      selectedWords = allWords;
-    }
-  }
-  if (n > selectedWords.length) n = selectedWords.length;
-  words = shuffle(selectedWords).slice(0, n);
-  current = 0;
-  correct = 0;
-  total = n;
-
-  // Show practice info
-  const infoDiv = document.getElementById('practiceInfo');
-  if (infoDiv) {
-    let infoText = 'Now Practicing: ';
-    const level = document.getElementById('levelSelect').value;
-    const kapitel = document.getElementById('kapitelSelect').value;
-    const sectionEl = document.getElementById('sectionSelect');
-    const section = sectionEl ? sectionEl.value : 'none';
-    const numWords = document.getElementById('numWords').value;
-    infoText += `Level ${level}, Kapitel ${kapitel}`;
-    if (section && section !== 'none') {
-      infoText += `, Section ${section}`;
-    }
-    infoText += `, ${numWords} word${numWords == 1 ? '' : 's'}`;
-    infoDiv.textContent = infoText;
-  }
+export function startQuiz() {
+  currentIdx = 0;
+  score = 0;
+  verbTotal = parseInt(document.getElementById('numWords').value, 10);
+  selectedVerbs = shuffle(verbs).slice(0, verbTotal);
 
   document.getElementById('setup').style.display = 'none';
-  document.getElementById('practice').style.display = '';
-  document.getElementById('end').style.display = 'none';
-  document.getElementById('feedback').textContent = '';
-  document.getElementById('answerInput').value = '';
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('result-section').style.display = 'none';
+
   // Reset progress bar
   const progressBar = document.getElementById('progressBar');
   if (progressBar) progressBar.style.width = '0%';
-  setCheckNextState({checkEnabled: true, nextEnabled: false});
-  showWord();
+
+  showQuestion();
 }
 
-export function showWord() {
-  if (current < total) {
-    document.getElementById('wordDisplay').textContent = words[current].question;
-    document.getElementById('answerInput').value = '';
-    document.getElementById('answerInput').focus();
-    document.getElementById('progress').textContent = `Word ${current + 1} of ${total}`;
-    document.getElementById('feedback').textContent = '';
-    setCheckNextState({checkEnabled: true, nextEnabled: false});
-    // Update progress bar to reflect the word being answered (current+1)
-    const progressBar = document.getElementById('progressBar');
-    if (progressBar) {
-      let percent = ((current) / total) * 100;
-      progressBar.style.width = `${percent}%`;
-    }
-  } else {
-    // Fill progress bar at end
-    const progressBar = document.getElementById('progressBar');
-    if (progressBar) {
-      progressBar.style.width = '100%';
-    }
-    endPractice();
+export function showQuestion() {
+  if (currentIdx >= selectedVerbs.length) {
+    showResult();
+    return;
   }
-}
-
-export function checkAnswer() {
-  const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
-  const correctAnswer = words[current].answer.trim().toLowerCase();
-  if (userAnswer === correctAnswer) {
-    document.getElementById('feedback').textContent = '✅ Correct!';
-    correct++;
-  } else {
-    document.getElementById('feedback').textContent = `❌ Wrong! Correct answer: ${words[current].answer}`;
+  document.getElementById('progress').textContent = `Verb ${currentIdx + 1} of ${selectedVerbs.length}`;
+  const v = selectedVerbs[currentIdx];
+  document.getElementById('english-verb').textContent = v.en;
+  document.getElementById('present').value = '';
+  document.getElementById('perfect').value = '';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = '';
+  
+  // Show submit button and hide next button
+  document.getElementById('submit-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').style.display = 'none';
+  
+  // Update progress bar
+  const progressBar = document.getElementById('progressBar');
+  if (progressBar) {
+    const percent = (currentIdx / selectedVerbs.length) * 100;
+    progressBar.style.width = `${percent}%`;
   }
-  setCheckNextState({checkEnabled: false, nextEnabled: true});
+  
+  setTimeout(() => document.getElementById('present').focus(), 50);
 }
 
 export function nextWord() {
-  current++;
-  showWord();
+  currentIdx++;
+  showQuestion();
 }
 
 export function endPractice() {
-  document.getElementById('practice').style.display = 'none';
-  document.getElementById('end').style.display = '';
-  document.getElementById('score').textContent = `You got ${correct} out of ${total} correct!`;
-  // Clear practice info
-  const infoDiv = document.getElementById('practiceInfo');
-  if (infoDiv) infoDiv.textContent = '';
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  showResult();
 }
 
 export function restart() {
@@ -176,33 +122,12 @@ export function setupEnterKey() {
   });
 }
 
-const verbs = [
-  {en: "to go", pr: "gehen", pe: "ist gegangen"},
-  {en: "to come", pr: "kommen", pe: "ist gekommen"},
-  {en: "to eat", pr: "essen", pe: "hat gegessen"},
-  {en: "to drink", pr: "trinken", pe: "hat getrunken"},
-  {en: "to see", pr: "sehen", pe: "hat gesehen"},
-  {en: "to write", pr: "schreiben", pe: "hat geschrieben"},
-  {en: "to speak", pr: "sprechen", pe: "hat gesprochen"},
-  {en: "to find", pr: "finden", pe: "hat gefunden"},
-  {en: "to give", pr: "geben", pe: "hat gegeben"},
-  {en: "to sleep", pr: "schlafen", pe: "hat geschlafen"},
-  {en: "to begin", pr: "beginnen", pe: "hat begonnen"},
-  {en: "to stay", pr: "bleiben", pe: "ist geblieben"},
-  {en: "to help", pr: "helfen", pe: "hat geholfen"},
-  {en: "to drive", pr: "fahren", pe: "ist gefahren"},
-  {en: "to read", pr: "lesen", pe: "hat gelesen"},
-  {en: "to take", pr: "nehmen", pe: "hat genommen"},
-  {en: "to call", pr: "rufen", pe: "hat gerufen"},
-  {en: "to run", pr: "laufen", pe: "ist gelaufen"},
-  {en: "to win", pr: "gewinnen", pe: "hat gewonnen"},
-  {en: "to lose", pr: "verlieren", pe: "hat verloren"}
-];
+import { verbs } from './verblist.js';
 
-let selectedVerbs = [];
-let currentIdx = 0;
-let score = 0;
-let total = 0;
+export let selectedVerbs = [];
+export let currentIdx = 0;
+export let score = 0;
+export let verbTotal = 0;
 
 const setupSection = document.getElementById('setup-section');
 const quizSection = document.getElementById('quiz-section');
@@ -220,82 +145,78 @@ const perfectInput = document.getElementById('perfect');
 const feedback = document.getElementById('feedback');
 const resultScore = document.getElementById('result-score');
 
-// Shuffle helper
-function shuffle(array) {
-  let a = [...array];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 // --- Quiz Logic ---
-function startQuiz() {
+export function startQuiz() {
   currentIdx = 0;
   score = 0;
-  total = parseInt(numQuestionsSelect.value, 10);
-  selectedVerbs = shuffle(verbs).slice(0, total);
+  verbTotal = parseInt(document.getElementById('numWords').value, 10);
+  selectedVerbs = shuffle(verbs).slice(0, verbTotal);
 
-  setupSection.style.display = 'none';
-  quizSection.style.display = 'block';
-  resultSection.style.display = 'none';
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('result-section').style.display = 'none';
 
   showQuestion();
 }
 
-function showQuestion() {
+export function showQuestion() {
   if (currentIdx >= selectedVerbs.length) {
     showResult();
     return;
   }
-  progress.textContent = `Verb ${currentIdx + 1} of ${selectedVerbs.length}`;
+  document.getElementById('progress').textContent = `Verb ${currentIdx + 1} of ${selectedVerbs.length}`;
   const v = selectedVerbs[currentIdx];
-  englishVerb.textContent = v.en;
-  presentInput.value = '';
-  perfectInput.value = '';
-  feedback.textContent = '';
-  feedback.className = '';
-  setTimeout(() => presentInput.focus(), 50);
+  document.getElementById('english-verb').textContent = v.en;
+  document.getElementById('present').value = '';
+  document.getElementById('perfect').value = '';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = '';
+  
+  // Show submit button and hide next button
+  document.getElementById('submit-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').style.display = 'none';
+  
+  // Update progress bar
+  const progressBar = document.getElementById('progressBar');
+  if (progressBar) {
+    const percent = (currentIdx / selectedVerbs.length) * 100;
+    progressBar.style.width = `${percent}%`;
+  }
+  
+  setTimeout(() => document.getElementById('present').focus(), 50);
 }
 
-quizForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const userPresent = presentInput.value.trim().toLowerCase();
-  const userPerfect = perfectInput.value.trim().toLowerCase();
+export function handleSubmit(userPresent, userPerfect) {
   const v = selectedVerbs[currentIdx];
   const correctPresent = v.pr.toLowerCase();
   const correctPerfect = v.pe.toLowerCase();
 
   let isCorrect = (userPresent === correctPresent) && (userPerfect === correctPerfect);
+  const feedback = document.getElementById('feedback');
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
 
   if (isCorrect) {
-    feedback.textContent = 'Correct!';
+    feedback.textContent = '✅ Correct!';
     feedback.className = 'correct';
     score++;
   } else {
-    feedback.innerHTML = `Incorrect.<br> <span style="color:#647dee">Präsens:</span> <b>${v.pr}</b> &nbsp; <span style="color:#43cea2">Perfekt:</span> <b>${v.pe}</b>`;
+    feedback.innerHTML = `❌ Incorrect.<br><br>
+      <span style="color:#647dee">Präsens:</span> <b>${v.pr}</b><br>
+      <span style="color:#43cea2">Perfekt:</span> <b>${v.pe}</b>`;
     feedback.className = 'incorrect';
   }
 
-  setTimeout(() => {
-    currentIdx++;
-    showQuestion();
-  }, 1050);
-});
-
-function showResult() {
-  quizSection.style.display = 'none';
-  resultSection.style.display = 'block';
-  let emoji = score === selectedVerbs.length ? "🎉" : score >= selectedVerbs.length / 2 ? "👍" : "💡";
-  resultScore.innerHTML = `You got <span style="color:#43cea2">${score}</span> out of <span style="color:#7f53ac">${selectedVerbs.length}</span> correct! <br>${emoji} ${score === selectedVerbs.length ? 'Perfect! Great job!' : (score > selectedVerbs.length / 2 ? 'Nice work!' : 'Keep practicing!')}`;
+  // Hide submit button and show next button
+  submitBtn.style.display = 'none';
+  nextBtn.style.display = 'inline-block';
 }
 
-startBtn.addEventListener('click', startQuiz);
-restartBtn.addEventListener('click', () => {
-  setupSection.style.display = 'block';
+export function showResult() {
   quizSection.style.display = 'none';
-  resultSection.style.display = 'none';
-  score = 0;
-  currentIdx = 0;
-});
+  resultSection.style.display = 'block';
+  let emoji = score === verbTotal ? "🎉" : score >= verbTotal / 2 ? "👍" : "💡";
+  resultScore.innerHTML = `You got <span style="color:#43cea2">${score}</span> out of <span style="color:#7f53ac">${verbTotal}</span> correct! <br>${emoji} ${score === verbTotal ? 'Perfect! Great job!' : (score > verbTotal / 2 ? 'Nice work!' : 'Keep practicing!')}`;
+}
+
+// Event listeners will be set up in the HTML file

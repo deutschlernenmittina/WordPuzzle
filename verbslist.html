@@ -4,56 +4,289 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>German Verb Practice Quiz</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    .numwords-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+      margin: 0.7em 0 1.2em 0;
+      background: #f1f5f9;
+      border-radius: 2em;
+      box-shadow: 0 2px 8px #e0e7ff;
+      padding: 0.5em 1em;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .numwords-btn {
+      width: 2.6em;
+      height: 2.6em;
+      font-size: 1.5em;
+      background: #e0e7ff;
+      color: #312e81;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px #c7d2fe;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .numwords-btn:hover {
+      background: #6366f1;
+      color: #fff;
+      box-shadow: 0 2px 8px #a5b4fc;
+    }
+    .numwords-input {
+      width: 3.5em;
+      text-align: center;
+      font-size: 1.2em;
+      padding: 0.5em 0.7em;
+      border-radius: 1.2em;
+      border: 2px solid #a5b4fc;
+      background: #fff;
+      color: #312e81;
+      font-weight: 600;
+      box-shadow: 0 1px 4px #e0e7ff;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .numwords-input:focus {
+      border: 2px solid #6366f1;
+      box-shadow: 0 2px 8px #a5b4fc;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: #312e81;
+      color: #fff;
+      padding: 1.5em 0 1em 0;
+      text-align: center;
+      box-shadow: 0 2px 8px #b3b3b3;
+    }
+    .container {
+      background: #fff;
+      margin: 2em auto 0 auto;
+      padding: 2.5em 2em 2em 2em;
+      box-shadow: 0 4px 24px #b3b3b3;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+    }
+    .word {
+      font-size: 2em;
+      margin-bottom: 1.2em;
+      color: #312e81;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .feedback {
+      margin: 1em 0 0.5em 0;
+      height: 2em;
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      padding: 0.7em;
+      width: 95%;
+      margin-bottom: 1.2em;
+      border: 1.5px solid #a5b4fc;
+      border-radius: 6px;
+      font-size: 1em;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus {
+      border: 2px solid #6366f1;
+      outline: none;
+    }
+    button {
+      padding: 0.6em 1.5em;
+      margin: 0.3em 0.2em;
+      background: linear-gradient(90deg, #6366f1 60%, #312e81 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #e0e7ff;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: linear-gradient(90deg, #4338ca 60%, #312e81 100%);
+      box-shadow: 0 4px 16px #c7d2fe;
+    }
+    button:disabled {
+      background: #c7d2fe;
+      color: #888;
+      cursor: not-allowed;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #e0e7ff;
+      border-radius: 6px;
+      margin: 1em 0 0.5em 0;
+      height: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1 60%, #312e81 100%);
+      width: 0%;
+      border-radius: 6px;
+      transition: width 0.4s;
+    }
+    #score {
+      font-size: 1.2em;
+      color: #312e81;
+      margin: 1em 0 0.5em 0;
+      font-weight: 600;
+    }
+    .input-row {
+      margin-bottom: 1em;
+    }
+    .input-row label {
+      display: block;
+      text-align: left;
+      margin-bottom: 0.5em;
+      color: #312e81;
+      font-weight: 500;
+    }
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.2em 0.5em 1em 0.5em;
+        max-width: 98vw;
+      }
+      .word {
+        font-size: 1.2em;
+      }
+    }
+  </style>
 </head>
 <body>
-  <main class="main-bg">
-    <div class="glass-card">
-      <header>
-        <h1>German Verb Trainer</h1>
-        <p class="subtitle">Test your German verbs: Translate from English to <b>Präsens</b> & <b>Perfekt</b></p>
-      </header>
-      <section id="setup-section">
-        <label for="num-questions" class="setup-label">How many verbs would you like to practice?</label>
-        <select id="num-questions">
-          <option value="5">5</option>
-          <option value="10" selected>10</option>
-          <option value="15">15</option>
-          <option value="20">20</option>
-        </select>
-        <button id="start-btn" class="primary-btn">Start Quiz</button>
-      </section>
-      <section id="quiz-section" style="display:none">
-        <div id="progress"></div>
-        <div id="quiz-content">
-          <div class="question-card">
-            <span class="label">English:</span>
-            <span id="english-verb"></span>
-          </div>
-          <form id="quiz-form" autocomplete="off">
-            <div class="input-row">
-              <label for="present">Präsens</label>
-              <input type="text" id="present" name="present" required autocomplete="off">
-            </div>
-            <div class="input-row">
-              <label for="perfect">Perfekt</label>
-              <input type="text" id="perfect" name="perfect" required autocomplete="off">
-            </div>
-            <button type="submit" class="primary-btn">Check Answer</button>
-          </form>
-          <div id="feedback"></div>
+  <header>
+    <nav style="position: absolute; top: 1em; left: 1em;">
+      <a href="index.html" style="
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6em 1.2em;
+        background: rgba(255,255,255,0.1);
+        color: #c7d2fe;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s;
+        border: 1px solid rgba(255,255,255,0.1);
+      ">← Back to Word Quiz</a>
+    </nav>
+    <h1>German Verb Trainer</h1>
+    <p style="font-size:1.1em; font-weight:400; margin:0.2em 0 0 0; color:#c7d2fe;">Test your German verbs: Translate from English to <b>Präsens</b> & <b>Perfekt</b></p>
+  </header>
+  <main>
+    <div class="container">
+      <div id="setup">
+        <label style="font-size:1.1em; font-weight:500; color:#312e81;">Number of verbs to practice:</label>
+        <div class="numwords-group">
+          <button type="button" id="decreaseNumWords" class="numwords-btn" aria-label="Decrease">-</button>
+          <input type="number" id="numWords" min="1" max="20" value="10" class="numwords-input" aria-label="Number of words">
+          <button type="button" id="increaseNumWords" class="numwords-btn" aria-label="Increase">+</button>
         </div>
+        <button id="start-btn">Start Quiz</button>
+      </div>
+      <section id="quiz-section" style="display:none">
+        <div id="practiceInfo" style="color:#0f172a; font-size:1em; background-color:#e0f2fe; border-left:4px solid #0284c7; padding:0.75em 1em; margin-bottom:0.75em; border-radius:4px;"></div>
+        <div class="word" id="english-verb"></div>
+        <form id="quiz-form" autocomplete="off">
+          <div class="input-row">
+            <label for="present">Präsens</label>
+            <input type="text" id="present" name="present" required autocomplete="off">
+          </div>
+          <div class="input-row">
+            <label for="perfect">Perfekt</label>
+            <input type="text" id="perfect" name="perfect" required autocomplete="off">
+          </div>
+          <div style="display: flex; gap: 1em; justify-content: center; margin-top: 1.5em;">
+            <button type="submit" id="submit-btn" style="min-width: 120px;">Check Answer</button>
+            <button type="button" id="next-btn" style="display:none; background:#16a34a; min-width: 120px;">Next →</button>
+          </div>
+        </form>
+        <div class="feedback" id="feedback"></div>
+        <div class="progress-bar"><div class="progress-bar-inner" id="progressBar"></div></div>
+        <div id="progress" style="color:#6366f1; font-size:0.98em;"></div>
       </section>
       <section id="result-section" style="display:none">
-        <h2>Results</h2>
-        <p id="result-score"></p>
-        <button id="restart-btn" class="primary-btn">Try Again</button>
+        <h3 style="color:#16a34a; font-size:1.3em;">Practice complete!</h3>
+        <div id="result-score"></div>
+        <button id="restart-btn" type="button">Practice Again</button>
       </section>
     </div>
-    <footer>
-      <p>Made with <span class="heart">♥</span> for language learners</p>
-    </footer>
   </main>
-  <script src="script.js"></script>
+  <script type="module">
+    import { startQuiz, showQuestion, showResult, handleSubmit, nextWord } from './script.js';
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add plus/minus button logic for numWords
+      const numInput = document.getElementById('numWords');
+      const decBtn = document.getElementById('decreaseNumWords');
+      const incBtn = document.getElementById('increaseNumWords');
+      
+      if (decBtn && numInput) {
+        decBtn.onclick = () => {
+          let v = parseInt(numInput.value, 10);
+          if (v > parseInt(numInput.min, 10)) numInput.value = v - 1;
+        };
+      }
+      if (incBtn && numInput) {
+        incBtn.onclick = () => {
+          let v = parseInt(numInput.value, 10);
+          if (v < parseInt(numInput.max, 10)) numInput.value = v + 1;
+        };
+      }
+
+      // Set up form submission handler
+      const quizForm = document.getElementById('quiz-form');
+      if (quizForm) {
+        quizForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const userPresent = document.getElementById('present').value.trim().toLowerCase();
+          const userPerfect = document.getElementById('perfect').value.trim().toLowerCase();
+          handleSubmit(userPresent, userPerfect);
+        });
+      }
+
+      // Set up start button
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) {
+        startBtn.addEventListener('click', startQuiz);
+      }
+
+      // Set up restart button
+      const restartBtn = document.getElementById('restart-btn');
+      if (restartBtn) {
+        restartBtn.addEventListener('click', () => {
+          document.getElementById('setup').style.display = 'block';
+          document.getElementById('quiz-section').style.display = 'none';
+          document.getElementById('result-section').style.display = 'none';
+          location.reload(); // This will ensure a clean slate
+        });
+      }
+
+      // Set up next button
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', nextWord);
+      }
+    });
+  </script>
 </body>
 </html>
