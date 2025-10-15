@@ -15,7 +15,7 @@ function updateChapterOptions() {
     chapters.forEach(chap => {
       const opt = document.createElement('option');
       opt.value = chap;
-      opt.textContent = `Chapter ${chap}`;
+      opt.textContent = `Kapitel ${chap}`;
       chapterSelect.appendChild(opt);
     });
   }
