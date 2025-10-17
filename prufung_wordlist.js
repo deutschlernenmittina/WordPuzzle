@@ -339,6 +339,8 @@ export const prufungWordList = {
         { question: "das Schlafzimmer", answer: "the bedroom" },
         { question: "das Kinderzimmer", answer: "the children's room" },
         { question: "die Küche", answer: "the kitchen" },
+        { question: "der Stock", answer: "the floor (of a building)" },
+        { question: "die Etage", answer: "the floor (of a building)" },
         { question: "das Badezimmer / das Bad", answer: "the bathroom" },
         { question: "die Toilette / das WC", answer: "the toilet" },
         { question: "der Quadratmeter", answer: "the square meter" },
