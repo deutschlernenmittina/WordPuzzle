@@ -264,7 +264,7 @@ export const prufungWordList = {
         { question: "der Junge", answer: "the boy" },
         { question: "das Mädchen", answer: "the girl" },
         { question: "die Adresse", answer: "the address" },
-        { question: "der Wohnort", answer: "the place of residence " },
+        { question: "der Wohnort", answer: "the place of residence" },
         { question: "wohnen", answer: "to live/to reside" },
         { question: "leben", answer: "to live" },
         { question: "die Straße", answer: "the street" },
