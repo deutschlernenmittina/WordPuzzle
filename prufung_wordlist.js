@@ -319,13 +319,15 @@ export const prufungWordList = {
         { question: "der Kindergarten", answer: "the kindergarden / the preschool" },
         { question: "der Pass/Reisepass", answer: "the passport" },
         { question: "der Ausweis", answer: "the ID card / the identification" },
-        { question: "die Papiere (Plural)", answer: "the papers / the documents" },
+        { question: "die Papiere (Plural)", answer: "the papers" },
         { question: "das Formular", answer: "the form" },
         { question: "ein Formular ausfüllen", answer: "to fill out a form" },
         { question: "die Staatsangehörigkeit/Nationalität", answer: "the citizenship / the nationality" },
         { question: "der Führerschein", answer: "the driver's license" },
         { question: "unterschreiben", answer: "to sign" },
-        { question: "die Unterschrift", answer: "the signature" }
+        { question: "die Unterschrift", answer: "the signature" },
+        { question: "die unterlagen", answer: "the documents" }
+
     ],
     3: [
         { question: "wohnen", answer: "to live" },
