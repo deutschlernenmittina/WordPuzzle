@@ -313,7 +313,7 @@ export const prufungWordList = {
         { question: "die Großeltern (Plural)", answer: "the grandparents" },
         { question: "der Freund", answer: "the friend (male) / the boyfriend" },
         { question: "die Freundin", answer: "the friend (female) / the girlfriend" },
-        { question: "der/die Bekannte", answer: "the acquaintance (male/female)" },
+        { question: "der/die Bekannte", answer: "the acquaintance (male/female) (well-known person/thing)" },
         { question: "der/die Erwachsene", answer: "the adult (male/female)" },
         { question: "der/die Jugendliche", answer: "the youth (male/female)" },
         { question: "der Kindergarten", answer: "the kindergarden / the preschool" },
